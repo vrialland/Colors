@@ -1,4 +1,4 @@
-package biz.rialland.shapes;
+package biz.rialland.colors;
 
 public class ShapeColor {
     private int code;

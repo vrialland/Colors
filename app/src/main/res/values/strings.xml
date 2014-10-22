@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Shapes</string>
+    <string name="app_name">Colors</string>
     <string name="action_reset">Reset</string>
     <string name="click_action">Press the %s button</string>
     <string name="msg_bad">Try again!</string>
@@ -13,4 +13,5 @@
     <string name="violet">violet</string>
     <string name="white">white</string>
     <string name="yellow">yellow</string>
+    <!-- Shapes -->
 </resources>
