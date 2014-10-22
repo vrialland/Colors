@@ -1,50 +1,111 @@
 package biz.rialland.shapes;
 
-import android.app.ActionBar;
 import android.app.Activity;
-import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+
+import java.util.Locale;
 
 public class MainActivity extends Activity {
+    private final static int COLS = 2;
+
+    private ShapeColor currentColor = null;
+    private TextToSpeech tts = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        GridLayout grid = (GridLayout) findViewById(R.id.grid);
-        int id = 0;
-        for (byte i=0; i < grid.getColumnCount(); i++)
-            for (byte j = 0; j < grid.getRowCount(); j++) {
-                Button bt = new Button(this);
-                int curId = ++id;
-                bt.setId(curId);
-                bt.setText(Integer.toString(curId));
-                bt.setBackgroundColor(ColorChoice.getRandomColor());
-                grid.addView(bt);
+
+        TableLayout grid = (TableLayout) findViewById(R.id.grid);
+        TableRow tr = null;
+        TableLayout.LayoutParams rowParams = new TableLayout.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT, 1f);
+        TableRow.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT, 1f);
+
+        for (int id=0; id < ColorChoice.nbItems(); id++) {
+            if (id % COLS == 0) {
+                tr = new TableRow(this);
+                tr.setLayoutParams(rowParams);
+                grid.addView(tr);
             }
+            Button bt = new Button(this);
+            bt.setLayoutParams(params);
+            bt.setId(id);
+            bt.setText(Integer.toString(id + 1));
+            tr.addView(bt);
+
+            bt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ColorDrawable bg = (ColorDrawable) view.getBackground();
+                    if (bg.getColor() == currentColor.getCode()) {
+                        tts.speak(getString(R.string.msg_good), TextToSpeech.QUEUE_FLUSH, null);
+                        initGame();
+                    } else {
+                        tts.speak(getString(R.string.msg_bad), TextToSpeech.QUEUE_FLUSH, null);
+                        view.setActivated(false);
+                    }
+                }
+            });
+        }
+        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+            tts.setLanguage(Locale.getDefault());
+            initGame();
+            }
+        });
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_reset:
+                initGame();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+    }
+
+    private void initGame() {
+        TableLayout grid = (TableLayout) findViewById(R.id.grid);
+        int id = 0;
+        for (ShapeColor sh: ColorChoice.getColors()) {
+            Button bt = (Button) grid.findViewById(id++);
+            bt.setBackgroundColor(sh.getCode());
+        }
+        currentColor = ColorChoice.getRandomColor();
+        String msg = getString(R.string.click_action, getTranslation(currentColor.getName()));
+        tts.speak(msg, TextToSpeech.QUEUE_ADD, null);
+    }
+
+    private String getTranslation(String name) {
+        return getString(getResources().getIdentifier(name, "string", getPackageName()));
     }
 }

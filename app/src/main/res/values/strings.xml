@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Shapes</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-
+    <string name="action_reset">Reset</string>
+    <string name="click_action">Press the %s button</string>
+    <string name="msg_bad">Try again!</string>
+    <string name="msg_good">Well done!</string>
+    <!-- Colors -->
+    <string name="black">black</string>
+    <string name="blue">blue</string>
+    <string name="green">green</string>
+    <string name="red">red</string>
+    <string name="violet">violet</string>
+    <string name="white">white</string>
+    <string name="yellow">yellow</string>
 </resources>

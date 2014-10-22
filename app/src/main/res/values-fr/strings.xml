@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_name">Forme</string>
+    <string name="action_reset">Réinitialiser</string>
+    <string name="click_action">Appuie sur le bouton %s</string>
+    <string name="msg_bad">Essaye encore !</string>
+    <string name="msg_good">Bravo !</string>
+    <!-- Colors -->
+    <string name="black">noir</string>
+    <string name="blue">bleu</string>
+    <string name="green">vert</string>
+    <string name="red">rouge</string>
+    <string name="violet">violet</string>
+    <string name="white">blanc</string>
+    <string name="yellow">jaune</string>
+</resources>

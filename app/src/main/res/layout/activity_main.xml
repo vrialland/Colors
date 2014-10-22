@@ -1,11 +1,11 @@
-<GridLayout
+<TableLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_weight="1"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:columnCount="2"
-    android:rowCount="4"
+    android:alignmentMode="alignBounds"
     android:id="@+id/grid"
     android:orientation="vertical"
-    android:useDefaultMargins="false">
+    android:stretchColumns="0,1">
 
-</GridLayout>
+</TableLayout>
